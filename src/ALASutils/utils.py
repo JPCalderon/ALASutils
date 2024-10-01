@@ -78,7 +78,7 @@ def CrossMatch(cat1, cat2, coor1 = ['RA', 'DEC'], coor2 = ['RA', 'DEC'], sep_min
     c2 = SkyCoord(cat2[coor2[0]], cat2[coor2[1]], unit = (u.deg, u.deg))
     c1 = SkyCoord(cat1[coor1[0]], cat1[coor1[1]], unit = (u.deg, u.deg))
 
-    idx_c2, idx_c1, d2d, d3d = c1.search_around_sky ( c2, sep_mini ) #, storekdtree = True )
+    idx_c2, idx_c1, d2d, d3d = c1.search_around_sky ( c2, sep_min ) #, storekdtree = True )
 
     cat2_match = cat2.iloc[ idx_c2 ]
     cat2_match.reset_index ( inplace = True )
@@ -89,7 +89,7 @@ def CrossMatch(cat1, cat2, coor1 = ['RA', 'DEC'], coor2 = ['RA', 'DEC'], sep_min
     cat1_match = cat1_match.add_suffix('_c1')
 
     Xmatch = pd.concat ( [cat1_match, cat2_match], axis = 1 )
-    Xmatch['separation'] = d2d
+    Xmatch['separation'] = d2d.to(u.deg).value
     Xmatch = Xmatch.sort_values ( 'separation' )
     Xmatch = Xmatch.drop_duplicates ( subset = 'index_c2', keep = 'first' ).drop_duplicates ( subset = 'index_c1', keep = 'first' )
     Xmatch.drop ( ['separation'], inplace = True, axis = 1 )

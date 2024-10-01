@@ -1,6 +1,8 @@
 from astropy.coordinates import SkyCoord
 from astropy.table import Table
 from astropy import units as u
+pix2 = u.def_unit('pix2', u.pix**(-2))
+(u.pix**(-2)).find_equivalent_units()
 
 import matplotlib.pyplot as plt
 from functools import reduce
@@ -76,7 +78,7 @@ def CrossMatch(cat1, cat2, coor1 = ['RA', 'DEC'], coor2 = ['RA', 'DEC'], sep_min
     c2 = SkyCoord(cat2[coor2[0]], cat2[coor2[1]], unit = (u.deg, u.deg))
     c1 = SkyCoord(cat1[coor1[0]], cat1[coor1[1]], unit = (u.deg, u.deg))
 
-    idx_c2, idx_c1, d2d, d3d = c1.search_around_sky ( c2, sep_min, storekdtree = True )
+    idx_c2, idx_c1, d2d, d3d = c1.search_around_sky ( c2, sep_min ) #, storekdtree = True )
 
     cat2_match = cat2.iloc[ idx_c2 ]
     cat2_match.reset_index ( inplace = True )
